@@ -1,5 +1,13 @@
 name: CI/CD Pipeline for Next.js
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 env:
   IMAGE_REPOSITORY: "bookstorewebapp"
   DOCKERFILE_PATH: "./FE/Dockerfile"
@@ -7,9 +15,8 @@ env:
 
 jobs:
   build:
-    name: Build and Test
+    name: FE Build and Test
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
 
     steps:
       - name: Checkout repository
@@ -48,9 +55,8 @@ jobs:
           npm run build
 
   deploy:
-    name: Build and Push Docker Image
+    name: FE Build and Push Docker Image
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:

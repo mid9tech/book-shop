@@ -1,5 +1,13 @@
 name: CI/CD Pipeline for NestJS
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+
 env:
   IMAGE_REPOSITORY: "bookstoreapi"
   DOCKERFILE_PATH: "./BE/Dockerfile"
@@ -7,9 +15,8 @@ env:
 
 jobs:
   build:
+    name: BE Build and Test
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -68,9 +75,8 @@ jobs:
           npm run build
 
   deploy:
-    name: Build and Push Docker Image
+    name: BE Build and Push Docker Image
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
