@@ -10,7 +10,7 @@ on:
 
 env:
   IMAGE_REPOSITORY: "bookstoreapi"
-  DOCKERFILE_PATH: "./Dockerfile"
+  DOCKERFILE_PATH: "./BE/Dockerfile"
   TAG: "${{ github.run_id }}"
 
 jobs:
