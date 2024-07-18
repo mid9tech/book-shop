@@ -1,13 +1,5 @@
 name: CI/CD Pipeline for Next.js
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 env:
   IMAGE_REPOSITORY: "bookstorewebapp"
   DOCKERFILE_PATH: "./FE/Dockerfile"

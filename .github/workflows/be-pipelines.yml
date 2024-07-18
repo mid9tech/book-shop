@@ -1,13 +1,5 @@
 name: CI/CD Pipeline for NestJS
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 env:
   IMAGE_REPOSITORY: "bookstoreapi"
   DOCKERFILE_PATH: "./BE/Dockerfile"
