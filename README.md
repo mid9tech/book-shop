@@ -1,10 +1,10 @@
-# HShopp - E-commerce Website
+# mid9shop - E-commerce Website
 
 ![Icon](FE/public/icon.jpg)
 
 ## Introduction
 
-HShopp is a comprehensive e-commerce platform designed to provide users with a seamless shopping experience. Developed by Nguyen Van Hai, the platform aims to offer a wide range of products while ensuring security and convenience for shoppers.
+mid9shop is a comprehensive e-commerce platform designed to provide users with a seamless shopping experience. Developed by mid9tech team, the platform aims to offer a wide range of products while ensuring security and convenience for shoppers.
 
 ## Technical stack
 
@@ -28,7 +28,7 @@ HShopp is a comprehensive e-commerce platform designed to provide users with a s
 
 ## Features
 
-HShopp comes equipped with a variety of features to enhance the online shopping experience:
+mid9shop comes equipped with a variety of features to enhance the online shopping experience:
 
 - **User Authentication and Registration:** Users can create accounts and securely log in to access personalized features.
 - **Product Browsing and Searching:** A vast catalog of products is available for users to explore, with efficient search functionality to find desired items.
@@ -38,7 +38,7 @@ HShopp comes equipped with a variety of features to enhance the online shopping 
 
 ## Backend
 
-The backend of HShopp is built using state-of-the-art technologies to ensure robustness, scalability, and security:
+The backend of mid9shop is built using state-of-the-art technologies to ensure robustness, scalability, and security:
 
 - **Framework:** NestJS - A progressive Node.js framework for building efficient and reliable server-side applications.
 - **GraphQL:** A query language for APIs that enables efficient data retrieval and manipulation.
@@ -57,10 +57,10 @@ HShopp's frontend is designed to deliver a seamless and engaging user experience
 
 ## Contact
 
-If you have any questions, feedback, or inquiries regarding HShopp, please feel free to reach out to us:
+If you have any questions, feedback, or inquiries regarding mid9shop, please feel free to reach out to us:
 
 - Email: nvhai2408@gmail.com
 - LinkedIn: [Nguyen Van Hai](https://www.linkedin.com/in/nvhai248/)
 - GitHub: [nguyenvanhai](https://github.com/nvhai248)
 
-We appreciate your interest in HShopp and look forward to hearing from you!
+We appreciate your interest in mid9shop and look forward to hearing from you!
