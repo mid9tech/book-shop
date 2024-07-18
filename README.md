@@ -6,6 +6,19 @@
 
 HShopp is a comprehensive e-commerce platform designed to provide users with a seamless shopping experience. Developed by Nguyen Van Hai, the platform aims to offer a wide range of products while ensuring security and convenience for shoppers.
 
+## Technical stack
+
+* [TypeScript](https://www.typescriptlang.org) language
+* [NodeJs](https://nodejs.org) / [NestJS v9](https://github.com/nestjs/nest)
+* [NextJS v14](https://nextjs.org)
+* [PostgreSQL](https://www.postgresql.org)
+* [Docker](https://www.docker.com)
+* [GraphQL](https://graphql.org/)
+
+## Software Architecture
+
+![System Design](https://github.com/user-attachments/assets/ccdb511a-a248-41e9-a6b8-41fc61821eb3)
+
 ## Author
 
 - **Nguyen Van Hai**
