@@ -1,5 +1,5 @@
 # Dockerfile of ./BE
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -14,17 +14,17 @@ RUN npm cache clean --force && npm install --force
 # Copy the rest of the application code
 COPY . .
 
+# RUN prisma
+RUN npm run prisma:generate
+
 # Build the application
 RUN npm run build
 
 # Use a smaller Node.js runtime image for the final stage
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set the working directory
 WORKDIR /app
-
-# Install necessary build tools for bcrypt and other native modules
-RUN apk add --no-cache bash make gcc g++ python3
 
 # Copy only the built application and node_modules from the build stage
 COPY --from=build /app/dist ./dist
@@ -35,12 +35,6 @@ COPY --from=build /app/tsconfig.json ./tsconfig.json
 COPY --from=build /app/public ./public
 COPY --from=build /app/views ./views
 # Copy the prisma directory
-
-# RUN prisma
-RUN npx prisma generate --schema=./prisma/schema.prisma
-
-# Ensure bcrypt is correctly built for the container architecture
-RUN npm rebuild bcrypt
 
 # Expose the port the app runs on
 EXPOSE 8080
