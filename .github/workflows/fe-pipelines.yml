@@ -10,7 +10,7 @@ on:
 
 env:
   IMAGE_REPOSITORY: "bookstorewebapp"
-  DOCKERFILE_PATH: "./FE/Dockerfile"
+  DOCKERFILE_PATH: "./Dockerfile"
   TAG: "${{ github.run_id }}"
 
 jobs:
@@ -72,7 +72,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./FE
           file: ${{ env.DOCKERFILE_PATH }}
           push: true
           tags: |
