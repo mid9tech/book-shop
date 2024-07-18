@@ -18,7 +18,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd BE
+          cd FE
           npm ci
 
   publish-gcr:

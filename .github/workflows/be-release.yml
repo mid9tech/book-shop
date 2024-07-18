@@ -44,4 +44,4 @@ jobs:
           docker build -t ghcr.io/${{ github.repository }}/apis:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/apis:latest .
+        run: docker push ghcr.io/${{ github.repository }}/apis:latest
