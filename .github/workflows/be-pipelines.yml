@@ -1,0 +1,102 @@
+name: CI/CD Pipeline for NestJS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  IMAGE_REPOSITORY: "bookstoreapi"
+  DOCKERFILE_PATH: "./BE/Dockerfile"
+  TAG: "${{ github.run_id }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        run: |
+          cd BE
+          npm cache clean --force
+          npm install -g @nestjs/cli
+          npm install --force
+          npm run prisma:generate
+
+      - name: Run lint
+        run: |
+          cd BE
+          npm run lint
+
+      - name: Run GitLeaks
+        run: |
+          cd BE
+          npm run gitleaks
+
+      - name: Run tests
+        run: |
+          cd BE
+          npm run test:ci
+
+      - name: Publish test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: "BE/**/test-report.xml"
+
+      - name: Publish code coverage results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: BE/coverage/cobertura-coverage.xml
+
+      - name: Run npm audit
+        run: |
+          cd BE
+          npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Build project
+        run: |
+          cd BE
+          npm run build
+
+  deploy:
+    name: Build and Push Docker Image
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE_PATH }}
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_REPOSITORY }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}

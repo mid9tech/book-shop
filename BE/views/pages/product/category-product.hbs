@@ -1,0 +1,236 @@
+<link
+  rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+/>
+
+<div class='flex flex-row'>
+  <div class='w-[20%]'>
+    <h3 class='text-2xl font-medium text-gray-700'>Category</h3>
+
+    <div
+      class='flex flex-col mt-8 h-full bg-slate-50 rounded-md w-full shadow-lg'
+    >
+      <div class='flex flex-col h-full w-full'>
+        <!-- Parent Category Template -->
+        {{#each categories}}
+          <div
+            class='border-b border-gray-300 cursor-pointer p-4 bg-white hover:bg-gray-200'
+            onclick="toggleSubmenu('{{parent.id}}')"
+          >
+            <div class='flex justify-between items-center'>
+              <span>{{parent.name}}</span>
+              <div class='flex items-center'>
+                <svg
+                  id='icon-{{parent.id}}'
+                  class='w-4 h-4 transform transition-transform duration-300'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    stroke-width='2'
+                    d='M19 9l-7 7-7-7'
+                  ></path>
+                </svg>
+                <i
+                  class='fas fa-trash-alt ml-2 text-red-500 cursor-pointer hover:scale-110'
+                  onclick="deleteParent('{{parent.id}}')"
+                ></i>
+              </div>
+            </div>
+            <div
+              id='{{parent.id}}'
+              class='max-h-0 mt-2 overflow-hidden transition-all duration-300 ease-in-out bg-white'
+            >
+              {{#if childs.length}}
+                {{#each childs}}
+                  <div
+                    class='flex justify-between items-center py-2 pl-2 w-full bg-gray-100 hover:bg-white'
+                  >
+                    <span>{{this.name}}</span>
+                    <i
+                      class='fas fa-trash-alt text-red-500 cursor-pointer mr-2 hover:scale-110'
+                      onclick="deleteChild('{{parent.id}}', '{{this.id}}')"
+                    ></i>
+                  </div>
+                {{/each}}
+              {{/if}}
+              <i
+                class='fas fa-plus-circle mt-2 py-2 px-2 text-blue-500 cursor-pointer hover:scale-110'
+                onclick="addChild('{{parent.id}}')"
+              ></i>
+            </div>
+          </div>
+        {{/each}}
+
+        <!-- Add New Parent Category Button -->
+        <div class='p-4'>
+          <i
+            class='fas fa-plus-circle py-2 px-4 text-green-500 cursor-pointer hover:scale-110'
+            onclick='openAddParent()'
+          ></i>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class='ml-8 w-[80%]'>
+    <div class='flex flex-row justify-between'>
+      <h3 class='text-2xl font-medium text-gray-700'>Product</h3>
+
+      <a
+        href='/create-category-product'
+        class='px-6 py-3 font-medium tracking-wide text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none hover:cursor-pointer'
+      >Add new Product</a>
+
+    </div>
+
+    <div class='flex flex-col mt-8 h-full w-full'>
+      <div class='py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8'>
+        <div
+          class='inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg'
+        >
+          <table class='min-w-full'>
+            <thead>
+              <tr>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Name
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Description
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Price
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  status
+                </th>
+                <th class='px-6 py-3 border-b border-gray-200 bg-gray-50'></th>
+              </tr>
+            </thead>
+
+            <tbody class='bg-white'>
+              {{#each products}}
+                <tr class='h-[10rem]'>
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap max-w-[300px] overflow-hidden'
+                  >
+                    <div class='flex items-center'>
+                      <div class='flex-shrink-0 w-[7rem] h-auto'>
+                        <img src='{{avatar}}' alt='' />
+                      </div>
+
+                      <div class='ml-4'>
+                        <div
+                          class='text-sm font-medium leading-5 text-gray-900'
+                        >
+                          {{name}}
+                        </div>
+                        <div class='text-sm leading-5 text-gray-500'>
+                          {{id}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap max-w-[300px] overflow-hidden'
+                  >
+                    <div class='text-sm leading-5 text-gray-900'>
+                      {{description}}
+                    </div>
+                    <div class='text-sm leading-5 text-gray-500'>
+                      {{publisherId}}
+                    </div>
+                  </td>
+
+                  <td
+                    class='px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    {{price}}
+                  </td>
+
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    <span
+                      class='inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full'
+                    >{{status}}</span>
+                  </td>
+
+                  <td
+                    class='px-6 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap'
+                  >
+                    <div class='flex flex-col'>
+                      <a
+                        href='/update-category-product?id={{id}}'
+                        class='text-indigo-600 hover:text-indigo-900'
+                      >Edit</a>
+                      <a
+                        onclick="deleteProduct('{{id}}', '{{name}}')"
+                        class='text-red-600 hover:text-red-900 hover:cursor-pointer ml-4'
+                      >Delete</a>
+
+                      <a
+                        onclick="inactiveProduct('{{id}}', '{{name}}')"
+                        class='text-orange-600 hover:text-orange-900 hover:cursor-pointer ml-4'
+                      >Inactive</a>
+                      <a
+                        onclick="activeProduct('{{id}}', '{{name}}')"
+                        class='text-green-600 hover:text-green-900 hover:cursor-pointer ml-4'
+                      >Active</a>
+                    </div>
+
+                  </td>
+                </tr>{{/each}}
+
+            </tbody>
+          </table>
+
+          <div class='flex justify-between items-center mt-5 mb-4 px-5'>
+            <div>
+              <label for='limit' class='mr-2'>Items per page:</label>
+              <select id='limit' class='border rounded p-2'>
+                <option value='5'>5</option>
+                <option value='10'>10</option>
+                <option value='20'>20</option>
+              </select>
+            </div>
+            <div>
+              <button
+                id='prevPage'
+                class='bg-blue-500 text-white px-4 py-2 rounded mr-2'
+              >Previous</button>
+              <span id='pageInfo' class='mr-2'></span>
+              <button
+                id='nextPage'
+                class='bg-blue-500 text-white px-4 py-2 rounded'
+              >Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='js/product/active.js'></script>
+<script src='js/product/delete.js'></script>
+<script src='js/product/inactive.js'></script>
+<script src='js/category/cate.js'></script>
+<script src='js/category/createParent.js'></script>
+<script src='js/category/deleteParent.js'></script>
+<script src='js/category/createChild.js'></script>
+<script src='js/category/deleteChildren.js'></script>

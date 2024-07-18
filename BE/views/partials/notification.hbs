@@ -1,0 +1,47 @@
+<style>
+    .notification {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 25px;
+        border-radius: 5px;
+        display: none;
+        z-index: 1000;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.5s, top 0.5s;
+    }
+    .notification.access {
+        background-color: #28a745;
+        color: white;
+    }
+    .notification.fail {
+        background-color: #dc3545;
+        color: white;
+    }
+    .notification.show {
+        display: block;
+        opacity: 1;
+        top: 40px;
+    }
+</style>
+
+<div id='notification' class='notification'></div>
+
+<script>
+    function showNotification(message, type) {
+        const notification = document.getElementById('notification');
+        notification.className = 'notification ' + type + ' show';
+        notification.textContent = message;
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.addEventListener('transitionend', () => {
+                notification.style.display = 'none';
+            }, { once: true });
+        }, 2000);
+    }
+</script>

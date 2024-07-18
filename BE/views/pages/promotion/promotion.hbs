@@ -1,0 +1,174 @@
+<link
+  rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+/>
+
+<div class='flex flex-row'>
+  <div class='w-full'>
+    <div class='flex flex-row justify-between'>
+      <h3 class='text-2xl font-medium text-gray-700'>Promotion</h3>
+
+      <a
+        href='/create-promotion'
+        class='px-6 py-3 font-medium tracking-wide text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none hover:cursor-pointer'
+      >Create Promotion</a>
+
+    </div>
+
+    <div class='flex flex-col mt-8 h-full w-full'>
+      <div class='py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8'>
+        <div
+          class='inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg'
+        >
+          <table class='min-w-full'>
+            <thead>
+              <tr>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Name
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Description
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Start Date
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  End Date
+                </th>
+
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Level
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  Type
+                </th>
+                <th
+                  class='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'
+                >
+                  status
+                </th>
+                <th class='px-6 py-3 border-b border-gray-200 bg-gray-50'></th>
+              </tr>
+            </thead>
+
+            <tbody class='bg-white'>
+              {{#each promotions}}
+                <tr class='h-[10rem]'>
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap max-w-[300px] overflow-hidden'
+                  >
+                    <div class='flex items-center'>
+                      <div class='flex-shrink-0 w-[7rem] h-auto'>
+                        <img src='{{banner}}' alt='' />
+                      </div>
+
+                      <div class='ml-4'>
+                        <div
+                          class='text-sm font-medium leading-5 text-gray-900'
+                        >
+                          {{name}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap max-w-[300px] overflow-hidden'
+                  >
+                    <div class='text-sm leading-5 text-gray-900'>
+                      {{description}}
+                    </div>
+                  </td>
+
+                  <td
+                    class='px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    {{startDate}}
+                  </td>
+
+                  <td
+                    class='px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    {{endDate}}
+                  </td>
+
+                  <td
+                    class='px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    {{level}}
+                  </td>
+
+                  <td
+                    class='px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    {{type}}
+                  </td>
+
+                  <td
+                    class='px-6 py-4 border-b border-gray-200 whitespace-nowrap'
+                  >
+                    <span
+                      class='inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full'
+                    >{{status}}</span>
+                  </td>
+
+                  <td
+                    class='px-6 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap'
+                  >
+                    <div class='flex flex-col'>
+                      <a
+                        href='/update-promotion?id={{id}}'
+                        class='text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                      >Edit Promotion</a>
+                      <a
+                        onclick="deletePromotion('{{id}}', '{{name}}',  '{{banner}}')"
+                        class='text-red-600 hover:text-red-900 hover:cursor-pointer ml-4'
+                      >Remove Promotion</a>
+                    </div>
+
+                  </td>
+                </tr>{{/each}}
+
+            </tbody>
+          </table>
+
+          <div class='flex justify-between items-center mt-5 mb-4 px-5'>
+            <div>
+              <label for='limit' class='mr-2'>Items per page:</label>
+              <select id='limit' class='border rounded p-2'>
+                <option value='5'>5</option>
+                <option value='10'>10</option>
+                <option value='20'>20</option>
+              </select>
+            </div>
+            <div>
+              <button
+                id='prevPage'
+                class='bg-blue-500 text-white px-4 py-2 rounded mr-2'
+              >Previous</button>
+              <span id='pageInfo' class='mr-2'></span>
+              <button
+                id='nextPage'
+                class='bg-blue-500 text-white px-4 py-2 rounded'
+              >Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='js/promotion/delete.js'></script>

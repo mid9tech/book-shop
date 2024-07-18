@@ -1,0 +1,531 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  id: ID!
+  name: String
+  description: String
+  categoryId: String
+  publisherId: String
+  price: Float
+  priceSale: Float
+  isOnSale: Boolean
+  avatar: String
+  rate: Float
+  ratingCount: Float
+  author: [String!]
+  images: [String!]
+  status: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PagingProduct {
+  page: Int
+  limit: Int
+  total: Int
+  data: [Product!]!
+}
+
+type CategoryChild {
+  id: ID!
+  name: String!
+  description: String
+  type: String!
+  parentId: String
+  status: Boolean!
+  createdBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  description: String
+  type: String!
+  status: Boolean!
+  createdBy: String!
+  childs: [CategoryChild!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Publisher {
+  id: ID!
+  name: String
+  description: String
+  avatar: String
+  address: String
+  phoneNumber: String
+  status: Boolean!
+  createdBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String!
+  birthDate: DateTime
+  phoneNumber: String
+  gender: String
+  avatar: String
+  status: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CartItem {
+  productId: ID!
+  quantity: Float!
+  product: Product!
+}
+
+type AuthResponse {
+  accessToken: String
+  expired_accessToken: Float
+  refreshToken: String
+  expired_refreshToken: Float
+}
+
+type LogoutResponse {
+  result: Boolean
+}
+
+type Promotion {
+  id: ID!
+  name: String!
+  description: String!
+  level: String!
+  type: String!
+  banner: String
+  discountPercentage: Float
+  discountValue: Float
+  minValue: Float
+  startDate: DateTime!
+  endDate: DateTime!
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PromotionItem {
+  productId: String!
+  promotionId: String!
+  quantity: Float!
+}
+
+type Contact {
+  id: ID!
+  ownerId: String!
+  fullName: String!
+  district: String!
+  province: String!
+  phoneNumber: String!
+  wards: String!
+  detailAddress: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OrderItem {
+  orderId: String!
+  productId: String!
+  price: Float!
+  quantity: Int!
+  product: Product!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Order {
+  id: ID!
+  contactId: String!
+  contact: Contact!
+  promotion: Promotion
+  promotionId: String
+  ownerId: String!
+  isPaid: Boolean!
+  totalPrice: Float!
+  priceToPay: Float!
+  reducePrice: Float!
+  paymentMethod: String!
+  items: [OrderItem!]!
+  status: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PagingOrderResponse {
+  page: Int
+  limit: Int
+  total: Int
+  data: [Order!]!
+}
+
+type Review {
+  productId: String!
+  ownerId: String!
+  title: String!
+  content: String!
+  rate: Float!
+  owner: User!
+  images: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PagingReviewResponse {
+  page: Int
+  limit: Int
+  total: Int
+  data: [Review!]!
+  countOneStar: Float!
+  countTwoStar: Float!
+  countThreeStar: Float!
+  countFourStar: Float!
+  countFiveStar: Float!
+}
+
+type About {
+  id: ID!
+  title: String!
+  description: String!
+  image: String!
+  status: Boolean!
+  type: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type RenderAbout {
+  main: [About!]!
+  child: [About!]!
+  qAndA: [About!]!
+}
+
+type Query {
+  products(searchConditionInput: SearchConditionInput!): PagingProduct!
+  product(id: String!): Product!
+  categories: [Category!]!
+  category(id: String!): Category!
+  publishers: [Publisher!]!
+  publisher(id: String!): Publisher!
+  users: [User!]!
+  user(id: ID!): User!
+  getProfile: User!
+  adminGetProfile: User!
+  getCart: [CartItem!]!
+  promotions(isAvailablePromotions: Boolean): [Promotion!]!
+  promotion(id: String!): Promotion!
+  recommend(recommendInput: RecommendInput!): [Promotion!]!
+  contacts: [Contact!]!
+  contact(id: String!): Contact!
+  orders(pagingOrderInput: PagingOrderInput!): PagingOrderResponse!
+  order(id: String!): Order!
+  historiesOrder(pagingOrderInput: PagingOrderInput!): PagingOrderResponse!
+  reviews(pagingReviewInput: PagingReviewInput!): PagingReviewResponse!
+  reviewsByProduct(pagingReviewInput: PagingReviewInput!, productId: String!): PagingReviewResponse!
+  review(findReviewInput: FindReviewInput!): Review!
+  historiesReview(pagingReviewInput: PagingReviewInput!): PagingReviewResponse!
+  renderAbout: RenderAbout!
+  abouts: [About!]!
+  about(id: String!): About!
+}
+
+input SearchConditionInput {
+  page: Int
+  limit: Int
+  keyword: String
+  categoryIds: [String!]
+  publisherIds: [String!]
+  isOnSale: Boolean
+  minPrice: Float
+  maxPrice: Float
+  rate: Float
+}
+
+input RecommendInput {
+  products: [ProductQuantity!]! = []
+  totalValue: Float!
+}
+
+input ProductQuantity {
+  productId: String!
+  quantity: Float!
+}
+
+input PagingOrderInput {
+  page: Int
+  limit: Int
+}
+
+input PagingReviewInput {
+  page: Int
+  limit: Int
+  rate: Float
+  sort: String
+}
+
+input FindReviewInput {
+  ownerId: String!
+  productId: String!
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Boolean!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Boolean!
+  removeCategoryParent(id: String!): Boolean!
+  createPublisher(createPublisherInput: CreatePublisherInput!): Publisher!
+  updatePublisher(updatePublisherInput: UpdatePublisherInput!): Boolean!
+  requireSendEmailVerifyUser: Boolean!
+  verifyUser(otp: String!): Boolean!
+  updateProfile(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: ID!): User!
+  requireSendEmailResetPassword(email: String!): Boolean!
+  refreshUserPassword(userRefreshPasswordInput: UserRefreshPasswordInput!): Boolean!
+  changePassword(changePasswordInput: ChangePasswordInput!): Boolean!
+  updateUserStatus(updateUserStatusInput: UpdateUserStatusInput!): Boolean!
+  addProductToCart(addProductInput: AddProductInput!): Boolean!
+  updateProductQuantity(updateProductQuantityInput: AddProductInput!): Boolean!
+  removeProductFromCart(productId: String!): Boolean!
+  clearCart: Boolean!
+  login(loginInput: LoginInput!): AuthResponse!
+  adminLogin(loginInput: AdminLoginInput!): AuthResponse!
+  register(registerInput: RegisterInput!): Boolean!
+  logout: LogoutResponse!
+  refreshAccessToken: AuthResponse!
+  createPromotion(createPromotionInput: CreatePromotionInput!): Promotion!
+  createItemPromotion(createPromotionItemInput: CreatePromotionItemInput!): PromotionItem!
+  updatePromotion(updatePromotionInput: UpdatePromotionInput!): Boolean!
+  updateQuantityPromotionItem(updateQuantityPromotionItem: CreatePromotionItemInput!): Boolean!
+  deletePromotionItem(promotionId: String!, productId: String!): Boolean!
+  createContact(createContactInput: CreateContactInput!): Contact!
+  updateContact(updateContactInput: UpdateContactInput!): Boolean!
+  deleteContact(id: String!): Boolean!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  updateStatusOrder(updateOrderInput: UpdateOrderInput!): Boolean!
+  createReview(createReviewInput: CreateReviewInput!): Review!
+  updateStatusReview(updateStatusReviewInput: UpdateReviewInput!): Boolean!
+  createAbout(createAboutInput: CreateAboutInput!): About!
+  updateAbout(updateAboutInput: UpdateAboutInput!): Boolean!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  categoryId: String!
+  publisherId: String!
+  price: Float!
+  avatar: String
+  author: [String!]
+  images: [String!]
+}
+
+input UpdateProductInput {
+  id: ID!
+  name: String
+  description: String
+  categoryId: String
+  publisherId: String
+  price: Float
+  priceSale: Float
+  isOnSale: Boolean
+  avatar: String
+  author: [String!]
+  images: [String!]
+  status: String
+}
+
+input CreateCategoryInput {
+  name: String!
+  description: String
+  type: String!
+  parentId: String
+}
+
+input UpdateCategoryInput {
+  id: ID!
+  name: String
+  description: String
+  type: String
+  parentId: String
+  status: Boolean
+}
+
+input CreatePublisherInput {
+  name: String!
+  description: String!
+  avatar: String!
+  address: String!
+  phoneNumber: String!
+}
+
+input UpdatePublisherInput {
+  id: ID!
+  name: String
+  description: String
+  avatar: String
+  address: String
+  phoneNumber: String
+  status: Boolean
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  birthDate: String
+  phoneNumber: String
+  avatar: String
+  gender: String
+}
+
+input UserRefreshPasswordInput {
+  id: String!
+  token: String!
+  password: String!
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+input UpdateUserStatusInput {
+  id: ID!
+  status: String!
+}
+
+input AddProductInput {
+  productId: String!
+  quantity: Float!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+  isRememberMe: Boolean! = false
+}
+
+input AdminLoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+}
+
+input CreatePromotionInput {
+  name: String!
+  description: String!
+  level: String!
+  type: String!
+  banner: String
+  discountPercentage: Float
+  discountValue: Float
+  minValue: Float
+  startDate: String!
+  endDate: String!
+}
+
+input CreatePromotionItemInput {
+  productId: String!
+  promotionId: String!
+  quantity: Float!
+}
+
+input UpdatePromotionInput {
+  id: ID!
+  name: String
+  description: String
+  level: String
+  type: String
+  banner: String
+  discountPercentage: Float
+  discountValue: Float
+  minValue: Float
+  startDate: String
+  endDate: String
+  status: Boolean
+}
+
+input CreateContactInput {
+  fullName: String!
+  district: String!
+  province: String!
+  phoneNumber: String!
+  wards: String!
+  detailAddress: String!
+}
+
+input UpdateContactInput {
+  id: ID!
+  fullName: String
+  district: String
+  province: String
+  phoneNumber: String
+  wards: String
+  detailAddress: String
+}
+
+input CreateOrderInput {
+  contactId: String!
+  promotionId: String
+  isPaid: Boolean!
+  paymentMethod: String!
+  items: [OrderItemInput!]!
+}
+
+input OrderItemInput {
+  productId: String!
+  price: Float!
+  quantity: Int!
+}
+
+input UpdateOrderInput {
+  id: ID!
+  status: String!
+  reason: String
+}
+
+input CreateReviewInput {
+  productId: String!
+  title: String!
+  content: String!
+  rate: Float!
+  images: [String!] = []
+}
+
+input UpdateReviewInput {
+  ownerId: String!
+  productId: String!
+  status: Boolean!
+}
+
+input CreateAboutInput {
+  title: String!
+  description: String!
+  image: String
+  type: String!
+}
+
+input UpdateAboutInput {
+  id: ID!
+  title: String
+  description: String
+  image: String
+  status: Boolean
+}

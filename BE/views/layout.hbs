@@ -1,0 +1,41 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <script src='https://cdn.tailwindcss.com'></script>
+    <title>Admin HShopp</title>
+  </head>
+
+  <script>
+      const totalItems = Number({{total}}); 
+
+      const BE_BASE_URL = "{{backend_base_url}}"
+      const HOST = `${BE_BASE_URL}/graphql`;
+      const HOST_UPLOAD = `${BE_BASE_URL}/upload`;
+
+      console.log(BE_BASE_URL)
+  </script>
+
+  <body>
+
+    {{>notification}}
+    <div class='flex h-screen bg-gray-200 font-roboto'>
+      {{>sidebar}}
+
+      <div class='flex-1 flex flex-col overflow-hidden'>
+        {{>header}}
+
+        <main class='flex-1 overflow-x-hidden overflow-y-auto bg-gray-200'>
+          <div class='container mx-auto px-6 py-8'>
+             {{{body}}}
+          </div>
+        </main>
+      </div>
+    </div>
+
+    {{>modal}}
+
+     <script src="js/route.js"></script>
+     <script src="js/paging.js"></script>
+  </body>
+</html>

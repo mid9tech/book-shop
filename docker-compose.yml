@@ -1,0 +1,93 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: hshopp_postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hshopp
+    ports:
+      - 5432:5432
+
+  redis:
+    container_name: hshopp_redis
+    image: redis
+    networks:
+      - hshopp
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+
+  backend:
+    container_name: hshopp_backend
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_ACCESS_TOKEN_KEY: ${SECRET_ACCESS_TOKEN_KEY}
+      SECRET_ACCESS_REFRESH_KEY: ${SECRET_ACCESS_REFRESH_KEY}
+      MAILER_USER: ${MAILER_USER}
+      MAILER_PASSWORD: ${MAILER_PASSWORD}
+      CLIENT_SITE_DOMAIN: ${CLIENT_SITE_DOMAIN}
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      SITE_PORT: ${SITE_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
+      AWS_REGION: ${AWS_REGION}
+      CRYPTO_SECRET: ${CRYPTO_SECRET}
+    networks:
+      - hshopp
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    container_name: hshopp_frontend
+    build:
+      context: ./FE
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_URL_BACKEND: ${NEXT_PUBLIC_URL_BACKEND}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+    networks:
+      - hshopp
+
+  gitleaks:
+    container_name: asset_management_gitleaks
+    build:
+      context: ./gitleaks
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    entrypoint: ["gitleaks", "detect", "-c", "/app/gitleaks/.gitleaks.toml"]
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  hshopp:
+    driver: bridge

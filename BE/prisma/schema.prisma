@@ -1,0 +1,295 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNDEFINED
+}
+
+enum StatusOrder {
+  PENDING
+  ON_SHIPPING
+  CANCEL
+  DONE
+  RETURN
+}
+
+enum StatusProduct {
+  ACTIVE
+  DELETED
+  INACTIVE
+}
+
+enum CategoryType {
+  CHILDREN
+  PARENT
+}
+
+enum AboutType {
+  Q_AND_A
+  MAIN
+  CHILD
+}
+
+enum PaymentMethod {
+  COD
+  CREDIT_CARD
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+  UNVERIFIED
+  DELETED
+}
+
+enum PromotionLevel {
+  ORDER
+  ITEM
+}
+
+enum PromotionType {
+  PERCENT
+  VALUE
+}
+
+model HShopAdmin {
+  id          String      @id @default(uuid())
+  firstName   String?
+  lastName    String?
+  email       String      @unique
+  birthDate   DateTime?
+  gender      Gender      @default(UNDEFINED)
+  phoneNumber String?
+  password    String
+  salt        String
+  status      Boolean     @default(true)
+  avatar      String?     @default("https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-2048x1949-pq9uiebg.png")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  publishers  Publisher[]
+  Product     Product[]
+  Category    Category[]
+}
+
+model User {
+  id           String         @id @default(uuid())
+  firstName    String?
+  lastName     String?
+  email        String         @unique
+  birthDate    DateTime?
+  gender       Gender         @default(UNDEFINED)
+  phoneNumber  String?
+  password     String
+  salt         String
+  googleId     String?
+  status       UserStatus     @default(UNVERIFIED)
+  avatar       String?        @default("https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-2048x1949-pq9uiebg.png")
+  secretOtp    String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  contacts     Contact[]
+  RefreshToken RefreshToken[]
+  Order        Order[]
+  Review       Review[]
+}
+
+model RefreshToken {
+  refreshToken String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  expired      BigInt
+  createdAt    DateTime @default(now())
+
+  @@id([refreshToken, userId])
+  @@index([userId], name: "userId_index")
+}
+
+model Contact {
+  id            String   @id @default(uuid())
+  owner         User?    @relation(fields: [ownerId], references: [id])
+  ownerId       String?
+  fullName      String
+  district      String
+  province      String
+  wards         String
+  detailAddress String
+  phoneNumber   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Order         Order[]
+
+  @@index([ownerId], name: "contact_user_idx")
+}
+
+model Product {
+  id           String             @id @default(uuid())
+  publisherId  String
+  name         String
+  description  String
+  price        Float
+  priceSale    Float?
+  categoryId   String
+  isOnSale     Boolean            @default(false)
+  category     Category           @relation(fields: [categoryId], references: [id])
+  publisher    Publisher          @relation(fields: [publisherId], references: [id])
+  avatar       String?
+  status       StatusProduct      @default(ACTIVE)
+  author       String[]
+  rate         Float?
+  ratingCount  Int                @default(0)
+  images       String[]
+  createdBy    String
+  admin        HShopAdmin         @relation(fields: [createdBy], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  Review       Review[]
+  productOrder productOrder[]
+  promotions   ProductPromotion[]
+
+  @@index([publisherId], name: "publisher_product_index")
+  @@index([categoryId], name: "category_product_index")
+}
+
+model Promotion {
+  id                 String             @id @default(uuid())
+  name               String
+  description        String
+  level              PromotionLevel     @default(ORDER)
+  type               PromotionType      @default(VALUE)
+  banner             String?            @default("https://img.freepik.com/free-vector/horizontal-sale-banner-template-world-book-day-celebration_23-2150181295.jpg?w=1380&t=st=1715965165~exp=1715965765~hmac=57900c36234f20ee17bd27f376407ef837816cd9161eecb49e4bde9ab6eeea4a")
+  discountPercentage Float?
+  discountValue      Float?
+  minValue           Float?
+  startDate          DateTime
+  endDate            DateTime
+  status             Boolean            @default(true)
+  products           ProductPromotion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order[]
+}
+
+model ProductPromotion {
+  productId   String
+  promotionId String
+  quantity    Int
+
+  product   Product   @relation(fields: [productId], references: [id])
+  promotion Promotion @relation(fields: [promotionId], references: [id])
+
+  @@id([productId, promotionId])
+}
+
+model Category {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  type        CategoryType @default(PARENT)
+  parentId    String?
+  status      Boolean      @default(true)
+  parent      Category?    @relation("ChildCategories", fields: [parentId], references: [id])
+  createdBy   String
+  admin       HShopAdmin   @relation(fields: [createdBy], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  products    Product[]
+  children    Category[]   @relation("ChildCategories")
+}
+
+model Publisher {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  address     String?
+  phoneNumber String?
+  avatar      String     @default("https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-2048x1949-pq9uiebg.png")
+  createdBy   String
+  admin       HShopAdmin @relation(fields: [createdBy], references: [id])
+  status      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Product     Product[]
+}
+
+model productOrder {
+  orderId   String
+  productId String
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+  price     Float
+  quantity  Int
+
+  @@id([orderId, productId])
+}
+
+model Order {
+  id            String         @id @default(uuid())
+  ownerId       String
+  contactId     String
+  promotionId   String?
+  owner         User           @relation(fields: [ownerId], references: [id])
+  contact       Contact        @relation(fields: [contactId], references: [id])
+  promotion     Promotion?     @relation(fields: [promotionId], references: [id])
+  products      productOrder[]
+  isPaid        Boolean        @default(false)
+  paymentMethod PaymentMethod  @default(COD)
+  totalPrice    Float
+  reducePrice   Float          @default(0)
+  priceToPay    Float          @default(0)
+  status        StatusOrder    @default(PENDING)
+  reason        String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([ownerId], name: "owner_order_index")
+}
+
+model Review {
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  content   String
+  title     String   @default("title")
+  images    String[]
+  status    Boolean  @default(true)
+  rate      Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([ownerId, productId])
+  @@index([ownerId], name: "owner_review_index")
+  @@index([productId], name: "product_review_index")
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  ownerId   String?
+  width     Int?
+  height    Int?
+  url       String
+  cloudName String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model About {
+  id          String    @id @default(uuid())
+  type        AboutType @default(Q_AND_A)
+  title       String
+  description String
+  image       String?
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  updatedAt DateTime @updatedAt
+}
