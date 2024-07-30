@@ -51,7 +51,7 @@ const MainFooter = () => {
                 className="flex text-5xl mt-6 font-mono font-semibold hover:cursor-pointer "
               >
                 <span className="text-white font-bold bg-gradient-to-r from-blue-500 to-blue-700 px-2 rounded-md">
-                  H
+                  Mid9
                 </span>
                 <p className="text-blue-700">Shopp</p>
               </Link>

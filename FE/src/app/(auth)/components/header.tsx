@@ -10,9 +10,9 @@ const AuthHeader = () => {
             className="flex text-5xl font-mono font-semibold hover:cursor-pointer"
           >
             <span className="text-white font-bold bg-gradient-to-r from-blue-500 to-blue-700 px-2 rounded-md">
-              H
+              Mid9
             </span>
-            <p className="text-blue-700">Shopp</p>
+            <p className="text-blue-700">Shop</p>
           </Link>
           <h1 className="text-white text-4xl ml-5">Authentication</h1>
         </div>
