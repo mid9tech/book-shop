@@ -21,7 +21,7 @@ mid9shop is a comprehensive e-commerce platform designed to provide users with a
 
 ## Author
 
-- **Nguyen Van Hai**
+- **Mid9 Tech**
   - Email: midninetech@gmail.com
   - GitHub: [mid9tech](https://github.com/mid9tech)
 
