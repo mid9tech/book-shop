@@ -22,9 +22,8 @@ mid9shop is a comprehensive e-commerce platform designed to provide users with a
 ## Author
 
 - **Nguyen Van Hai**
-  - Email: nvhai2408@gmail.com
-  - LinkedIn: [Nguyen Van Hai](https://www.linkedin.com/in/nvhai248/)
-  - GitHub: [nvhai248](https://github.com/nvhai248)
+  - Email: midninetech@gmail.com
+  - GitHub: [mid9tech](https://github.com/mid9tech)
 
 ## Features
 
@@ -48,7 +47,7 @@ The backend of mid9shop is built using state-of-the-art technologies to ensure r
 
 ## Frontend
 
-HShopp's frontend is designed to deliver a seamless and engaging user experience, leveraging modern technologies and best practices:
+BookShop's frontend is designed to deliver a seamless and engaging user experience, leveraging modern technologies and best practices:
 
 - **Framework:** Next.js - A React framework for building server-rendered and statically-generated web applications.
 - **Authentication:** NextAuth.js - A complete authentication solution for Next.js applications, providing easy integration with various authentication providers.
@@ -59,8 +58,7 @@ HShopp's frontend is designed to deliver a seamless and engaging user experience
 
 If you have any questions, feedback, or inquiries regarding mid9shop, please feel free to reach out to us:
 
-- Email: nvhai2408@gmail.com
-- LinkedIn: [Nguyen Van Hai](https://www.linkedin.com/in/nvhai248/)
-- GitHub: [nguyenvanhai](https://github.com/nvhai248)
+  - Email: midninetech@gmail.com
+  - GitHub: [mid9tech](https://github.com/mid9tech)
 
 We appreciate your interest in mid9shop and look forward to hearing from you!
